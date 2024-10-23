@@ -61,7 +61,7 @@ fn half_to_f32(half: u16) -> f32 {
 fn decode_vertices(blocks: &[DataBlock]) -> Vertices {
     let mut vertices = Vec::new();
     for block in blocks {
-        if ["Vertex", "SkinnableVertex"].contains(block.stream.render_type) {
+        if ["Vertex", "SkinnableVertex"].contains(&block.stream.render_type.as_str()) {
             let data = decode(&block.data.as_ref().unwrap().text);
             let mut block_vertices = Vec::new();
             let mut i = 0;
