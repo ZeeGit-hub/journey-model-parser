@@ -102,8 +102,10 @@ fn decode_uvs(block: &DataBlock) -> UVs {
         let u = half_to_f32(u16::from_be_bytes([data[i] as u8, data[i + 1] as u8]));
         let v = half_to_f32(u16::from_be_bytes([data[i + 2] as u8, data[i + 3] as u8]));
         uvs.push([u, v]);
-        if block.stream.data_type == "float2" {
+        if block.stream.data_type == "half2" {
             i += 4;
+        } else if block.stream.data_type == "half4" {
+            i += 8;
         }
     }
     assert_eq!(block.element_count, uvs.len());
