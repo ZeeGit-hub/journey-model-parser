@@ -43,10 +43,10 @@ fn decode(data: &str) -> Vec<u32> {
     }
 }
 
-fn float_to_f32(float: u16) -> f32 {
-    let sign = (float >> 15) & 0x1;
-    let exponent = (float >> 10) & 0x1f;
-    let mantissa = float & 0x3ff;
+fn half_to_f32(half: u16) -> f32 {
+    let sign = (half >> 15) & 0x1;
+    let exponent = (half >> 10) & 0x1f;
+    let mantissa = half & 0x3ff;
 
     if exponent == 0 && mantissa == 0 {
         return 0.0;
@@ -99,8 +99,8 @@ fn decode_uvs(block: &DataBlock) -> UVs {
     let data = decode(&block.data.as_ref().unwrap().text);
     let mut i = 0;
     while i < data.len() {
-        let u = float_to_f32(u16::from_be_bytes([data[i] as u8, data[i + 1] as u8]));
-        let v = float_to_f32(u16::from_be_bytes([data[i + 2] as u8, data[i + 3] as u8]));
+        let u = half_to_f32(u16::from_be_bytes([data[i] as u8, data[i + 1] as u8]));
+        let v = half_to_f32(u16::from_be_bytes([data[i + 2] as u8, data[i + 3] as u8]));
         uvs.push([u, v]);
         if block.stream.data_type == "float2" {
             i += 4;
